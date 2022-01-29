@@ -23,7 +23,6 @@ function reducer(state, action) {
 
 function useInputs(initialForm) {
   const [form, dispatch] = useReducer(reducer, initialForm);
-  console.log("form", form);
 
   const onChange = useCallback((e) => {
     const { name, value } = e.target;
@@ -34,14 +33,13 @@ function useInputs(initialForm) {
     });
   }, []);
 
-  const reset = useCallback(() => {
+  const onReset = useCallback(() => {
     dispatch({
       type: "RESET",
-      payload: initialForm,
     });
-  }, [initialForm]);
+  }, []);
 
-  return [form, onChange, reset];
+  return [form, onChange, onReset];
 }
 
 export default useInputs;
