@@ -1,27 +1,28 @@
-import React, { useContext, useRef } from "react";
+import { memo, useRef, useContext } from "react";
 import useInputs from "./hooks/useInputs";
 import { UserDispatch } from "./App";
 
 const CreateUser = () => {
-  const [{ username, email }, onChange, onReset] = useInputs({
+  const [{ username, email }, onChange, reset] = useInputs({
     username: "",
     email: "",
   });
 
-  const nextId = useRef(4);
+  const userId = useRef(4);
   const dispatch = useContext(UserDispatch);
 
   const onCreate = () => {
-    dispatch({
-      type: "CREATE_USER",
-      user: {
-        id: nextId.current,
-        username,
-        email,
-      },
-    });
-    onReset();
-    nextId.current = nextId.current + 1;
+    const newUser = {
+      id: userId.current,
+      username,
+      email,
+      active: false,
+    };
+
+    dispatch({ type: "CREATE_USER", payload: newUser });
+
+    reset();
+    userId.current = userId.current + 1;
   };
 
   return (
@@ -43,4 +44,4 @@ const CreateUser = () => {
   );
 };
 
-export default React.memo(CreateUser);
+export default memo(CreateUser);
